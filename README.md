@@ -1,2 +1,2 @@
 # Movies-App
-A demo app writen in Kotlin following the LCean Architecture concept and SOLID principles
+A demo app written in Kotlin following the CLean Architecture concept and SOLID principles
