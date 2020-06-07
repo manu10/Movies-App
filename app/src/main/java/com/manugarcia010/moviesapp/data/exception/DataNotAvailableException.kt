@@ -1,0 +1,3 @@
+package com.manugarcia010.moviesapp.data.exception
+
+class DataNotAvailableException : Throwable("Data Not Available") //fixme improve...
