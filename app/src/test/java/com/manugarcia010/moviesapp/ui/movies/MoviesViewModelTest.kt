@@ -5,6 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.manugarcia010.moviesapp.FakeDataGenerator
 import com.manugarcia010.moviesapp.LiveDataTestUtil
 import com.manugarcia010.moviesapp.MainCoroutineRule
+import com.manugarcia010.moviesapp.assertLiveDataEventTriggered
 import com.manugarcia010.moviesapp.data.exception.DataNotAvailableException
 import com.manugarcia010.moviesapp.domain.Response
 import com.manugarcia010.moviesapp.domain.repository.MovieRepository
@@ -87,6 +88,15 @@ class MoviesViewModelTest {
         verify(movieRepository).getPopularMovies()
     }
 
+
+    @Test
+    fun clickOnMovie_setsEventToNavigate() {
+        val movieId = 1
+        viewModel.openMovieDetails(movieId)
+
+        // Then the event is triggered
+        assertLiveDataEventTriggered(viewModel.openMovieDetailsEvent, movieId)
+    }
 
 
 }

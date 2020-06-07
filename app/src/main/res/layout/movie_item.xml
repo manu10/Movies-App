@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="viewmodel"
+            type="com.manugarcia010.moviesapp.ui.movies.MoviesViewModel" />
+
+        <variable
             name="movie"
             type="com.manugarcia010.moviesapp.ui.movies.MovieUI" />
 
@@ -15,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/cardview_margin"
-        app:cardCornerRadius="@dimen/movie_row_corner_radius">
+        app:cardCornerRadius="@dimen/movie_row_corner_radius"
+        android:onClick="@{() -> viewmodel.openMovieDetails(movie.id)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

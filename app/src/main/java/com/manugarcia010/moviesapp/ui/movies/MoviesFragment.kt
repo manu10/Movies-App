@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.manugarcia010.moviesapp.R
 import com.manugarcia010.moviesapp.databinding.MoviesFragmentBinding
+import com.manugarcia010.moviesapp.domain.model.Movie
+import com.manugarcia010.moviesapp.ui.EventObserver
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -37,7 +40,19 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupListAdapter()
+        setupNavigation()
         viewModel.loadMovies()
+    }
+
+    private fun setupNavigation() {
+        viewModel.openMovieDetailsEvent.observe(this.viewLifecycleOwner, EventObserver {
+            openMovieDetails(it)
+        })
+    }
+
+    private fun openMovieDetails(movieId: Int) {
+        val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(movieId)
+        findNavController().navigate(action)
     }
 
     private fun setupListAdapter() {

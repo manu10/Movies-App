@@ -7,12 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.manugarcia010.moviesapp.domain.Response
 import com.manugarcia010.moviesapp.domain.model.Movie
 import com.manugarcia010.moviesapp.domain.usecase.GetPopularMovies
+import com.manugarcia010.moviesapp.ui.Event
 import com.manugarcia010.moviesapp.ui.extensions.toPresentationMovie
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MoviesViewModel  @Inject constructor(val getMovies: GetPopularMovies) : ViewModel() {
 
+    private val _openMovieDetailsEvent = MutableLiveData<Event<Int>>()
+    val openMovieDetailsEvent: LiveData<Event<Int>> = _openMovieDetailsEvent
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
     private val _errorMessage = MutableLiveData<String>()
@@ -55,6 +58,12 @@ class MoviesViewModel  @Inject constructor(val getMovies: GetPopularMovies) : Vi
     private fun onLoadingDataFailure(response: Response.Error) {
         //todo: Improve error handling
         errorMessage.value = response.exception.message
+    }
+    /**
+     * Called by Data Binding.
+     */
+    fun openMovieDetails(movieId: Int) {
+        _openMovieDetailsEvent.value = Event(movieId)
     }
 }
 
