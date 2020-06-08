@@ -8,5 +8,6 @@ fun MovieRemote.toDomainMovie() = Movie(
     posterPath = poster_path,
     overview = overview,
     popularity = popularity,
+    voteAverage = voteAverage,
     title = title
 )

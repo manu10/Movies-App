@@ -1,7 +1,6 @@
 package com.manugarcia010.moviesapp
 
 import com.manugarcia010.moviesapp.domain.model.Movie
-import com.manugarcia010.moviesapp.ui.movies.MovieUI
 
 object FakeDataGenerator {
     fun getPopularMovies() =
@@ -11,6 +10,7 @@ object FakeDataGenerator {
                 "Fake overview 3",
                 "Fake poster path 3",
                 30.0,
+                30.0,
                 "Fake Title 3"
             ),
             Movie(
@@ -18,14 +18,16 @@ object FakeDataGenerator {
                 "Fake overview 2",
                 "Fake poster path 2",
                 20.0,
+                20.0,
                 "Fake Title 2"
             ),
             Movie(
                 1,
                 "Fake overview 1",
-                "Fake poster path 2",
+                "Fake poster path 1",
                 10.0,
-                "Fake Title 2"
+                10.0,
+                "Fake Title 1"
             )
         )
 
@@ -34,6 +36,7 @@ object FakeDataGenerator {
         "Fake overview 1",
         "Fake poster path 2",
         10.0,
-        "Fake Title 2"
+        10.0,
+        "Fake Title 1"
     )
 }

@@ -62,7 +62,9 @@ open class AppModule(){
         return Room.databaseBuilder(
             applicationContext,
             MovieDatabase::class.java, BuildConfig.DATABASE
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Singleton
