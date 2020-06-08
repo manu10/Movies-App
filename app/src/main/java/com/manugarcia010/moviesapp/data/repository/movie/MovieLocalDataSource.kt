@@ -19,6 +19,15 @@ class MovieLocalDataSource(
         }
     }
 
+    override suspend fun getTopRatedMovies(): Response<List<Movie>> {
+        val movies = movieDao.getTopRatedMovies()
+        return if (movies.isNotEmpty()) {
+            Response.Success(movies)
+        } else {
+            Response.Error(DataNotAvailableException())
+        }
+    }
+
     override suspend fun getMovie(movieId: Int) =
         movieDao.getMovie(movieId)
 

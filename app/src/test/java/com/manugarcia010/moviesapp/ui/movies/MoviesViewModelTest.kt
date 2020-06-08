@@ -10,6 +10,7 @@ import com.manugarcia010.moviesapp.data.exception.DataNotAvailableException
 import com.manugarcia010.moviesapp.domain.Response
 import com.manugarcia010.moviesapp.domain.repository.MovieRepository
 import com.manugarcia010.moviesapp.domain.usecase.GetPopularMovies
+import com.manugarcia010.moviesapp.domain.usecase.MoviesOrderCriteria
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -102,11 +103,23 @@ class MoviesViewModelTest {
 
     }
 
+    @Test
+    fun onRefresh_getTopRatedMovies_isCalled() = runBlockingTest{
+        // With MoviesOrderCriteria.POPULAR set
+        viewModel.setOrderCriteria(MoviesOrderCriteria.TOP_RATED)
+        // When onRefresh() is called
+        viewModel.onRefresh()
+        // getPopularMovies() is called
+        verify(movieRepository).getTopRatedMovies()
+    }
 
     @Test
     fun onRefresh_getPopularMovies_isCalled() = runBlockingTest{
-        // Make the repository return a correct value
+        // With MoviesOrderCriteria.POPULAR set
+        viewModel.setOrderCriteria(MoviesOrderCriteria.POPULAR)
+        // When onRefresh() is called
         viewModel.onRefresh()
+        // getPopularMovies() is called
         verify(movieRepository).getPopularMovies()
     }
 
@@ -119,6 +132,5 @@ class MoviesViewModelTest {
         // Then the event is triggered
         assertLiveDataEventTriggered(viewModel.openMovieDetailsEvent, movieId)
     }
-
 
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.manugarcia010.moviesapp.domain.Response
 import com.manugarcia010.moviesapp.domain.model.Movie
 import com.manugarcia010.moviesapp.domain.usecase.GetPopularMovies
+import com.manugarcia010.moviesapp.domain.usecase.MoviesOrderCriteria
 import com.manugarcia010.moviesapp.ui.Event
 import com.manugarcia010.moviesapp.ui.extensions.toPresentationMovie
 import kotlinx.coroutines.launch
@@ -23,6 +24,8 @@ class MoviesViewModel  @Inject constructor(val getMovies: GetPopularMovies) : Vi
     private val _items = MutableLiveData<List<MovieUI>>().apply { value = emptyList() }
     val items: MutableLiveData<List<MovieUI>> = _items
 
+    private var currentOrderCriterion = MoviesOrderCriteria.POPULAR
+
     fun onRefresh() {
         loadMovies()
     }
@@ -30,7 +33,7 @@ class MoviesViewModel  @Inject constructor(val getMovies: GetPopularMovies) : Vi
     fun loadMovies() {
         showLoading()
         viewModelScope.launch {
-            val movies =  getMovies()
+            val movies = getMovies.invoke(currentOrderCriterion)
             hideProgress()
             processMoviesDataResponse(movies)
         }
@@ -64,6 +67,10 @@ class MoviesViewModel  @Inject constructor(val getMovies: GetPopularMovies) : Vi
      */
     fun openMovieDetails(movieId: Int) {
         _openMovieDetailsEvent.value = Event(movieId)
+    }
+
+    fun setOrderCriteria(criterion: MoviesOrderCriteria?) {
+        currentOrderCriterion = criterion ?: MoviesOrderCriteria.POPULAR
     }
 }
 

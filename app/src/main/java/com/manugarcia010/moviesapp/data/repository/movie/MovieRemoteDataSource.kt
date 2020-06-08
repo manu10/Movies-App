@@ -18,4 +18,15 @@ class MovieRemoteDataSource(private val movieApi: MovieApi) : MovieDataSource.Re
             Response.Error(e)
         }
     }
+
+    override suspend fun getTopRatedMovies(): Response<List<Movie>> {
+        return try {
+            val result = movieApi.getTopRatedMovies()
+            Response.Success(result.movies.map {
+                it.toDomainMovie()
+            })
+        } catch (e: Exception) {
+            Response.Error(e)
+        }
+    }
 }

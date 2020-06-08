@@ -8,13 +8,12 @@ import com.manugarcia010.moviesapp.domain.model.Movie
 
 @Dao
 interface MovieDao {
-    /**
-     * Select all movies from the movies table.
-     *
-     * @return all movies.
-     */
+
     @Query("SELECT * FROM movies ORDER BY popularity DESC")
     suspend fun getPopularMovies(): List<Movie>
+
+    @Query("SELECT * FROM movies ORDER BY vote_average DESC")
+    fun getTopRatedMovies(): List<Movie>
 
     /**
      * Insert all movies.

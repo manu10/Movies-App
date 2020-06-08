@@ -13,12 +13,25 @@ class MovieRepositoryImpl constructor(
         return getPopularMoviesFromRemoteDataSource()
     }
 
-    private suspend fun getPopularMoviesFromLocalDataSource(): Response<List<Movie>> {
-        return movieLocal.getPopularMovies() //todo: add something to let the user know that the results may be outdated
+    override suspend fun getTopRatedMovies(): Response<List<Movie>> {
+        return getTopRatedMoviesFromRemoteDataSource()
     }
 
     override suspend fun getMovie(movieId: Int): Movie {
         return movieLocal.getMovie(movieId)
+    }
+
+    private suspend fun getTopRatedMoviesFromRemoteDataSource(): Response<List<Movie>> {
+        return when (val response = movieRemote.getTopRatedMovies()) {
+            is Response.Success -> {
+                saveMovies(response.data)
+                return response
+            }
+
+            is Response.Error -> {
+                getTopRatedMoviesFromLocalDataSource()
+            }
+        }
     }
 
     private suspend fun getPopularMoviesFromRemoteDataSource(): Response<List<Movie>> {
@@ -33,6 +46,14 @@ class MovieRepositoryImpl constructor(
                 getPopularMoviesFromLocalDataSource()
             }
         }
+    }
+
+    private suspend fun getPopularMoviesFromLocalDataSource(): Response<List<Movie>> {
+        return movieLocal.getPopularMovies() //todo: add something to let the user know that the results may be outdated
+    }
+
+    private suspend fun getTopRatedMoviesFromLocalDataSource(): Response<List<Movie>> {
+        return movieLocal.getTopRatedMovies() //todo: add something to let the user know that the results may be outdated
     }
 
     private suspend fun saveMovies(movies: List<Movie>) {
