@@ -47,6 +47,28 @@ class MoviesViewModelTest {
     }
 
     @Test
+    fun loadPopularMovies_loading() = runBlockingTest{
+        // Make the repository return a correct value
+        Mockito.`when`(movieRepository.getPopularMovies()).thenReturn(
+            Response.Success(FakeDataGenerator.getPopularMovies()))
+
+        // Pause dispatcher so we can verify initial values
+        mainCoroutineRule.pauseDispatcher()
+
+        // Load weather data
+        viewModel.loadMovies()
+
+        // Then progress indicator is visible
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isTrue()
+
+        mainCoroutineRule.resumeDispatcher()
+
+        // Then progress indicator is hidden
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
+    }
+
+    @Test
     fun loadPopularMovies_success() = runBlockingTest{
         // Make the repository return a correct value
         Mockito.`when`(movieRepository.getPopularMovies()).thenReturn(
