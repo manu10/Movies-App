@@ -1,8 +1,11 @@
 package com.manugarcia010.moviesapp.ui.movies
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.manugarcia010.moviesapp.R
@@ -38,13 +41,25 @@ class MoviesFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.movies_fragment_menu, menu)
+//        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE)
+//        activity?.componentName
+        val searchView = menu.findItem(R.id.menu_search).actionView as SearchView
+        searchView.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(s: String): Boolean {
+                viewModel.search(s)
+                return true
+            }
+
+            override fun onQueryTextChange(s: String): Boolean {
+                return false
+            }
+        })
+        searchView.setOnCloseListener { false }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
-            /*R.id.menu_search -> { todo
-                true
-            }*/
             R.id.menu_filter -> {
                 showOrderCriteriaPopUpMenu()
                 true

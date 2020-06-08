@@ -28,6 +28,15 @@ class MovieLocalDataSource(
         }
     }
 
+    override suspend fun searchMovies(searchTerm: String): Response<List<Movie>> {
+        val movies = movieDao.searchMovies("%$searchTerm%")
+        return if (movies.isNotEmpty()) {
+            Response.Success(movies)
+        } else {
+            Response.Error(DataNotAvailableException())
+        }
+    }
+
     override suspend fun getMovie(movieId: Int) =
         movieDao.getMovie(movieId)
 

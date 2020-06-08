@@ -23,6 +23,8 @@ class MoviesViewModel  @Inject constructor(
     val openMovieDetailsEvent: LiveData<Event<Int>> = _openMovieDetailsEvent
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
+    private val _dataAvailable = MutableLiveData<Boolean>()
+    val dataAvailable: LiveData<Boolean> = _dataAvailable
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage : MutableLiveData<String> = _errorMessage
     private val _items = MutableLiveData<List<MovieUI>>().apply { value = emptyList() }
@@ -60,11 +62,13 @@ class MoviesViewModel  @Inject constructor(
 
     private fun onLoadingDataSuccess(response: Response.Success<List<Movie>>) {
         _items.value = response.data.map { it.toPresentationMovie() }
+        _dataAvailable.value = true
     }
 
     private fun onLoadingDataFailure(response: Response.Error) {
         //todo: Improve error handling
-        errorMessage.value = response.exception.message
+        _errorMessage.value = response.exception.message
+        _dataAvailable.value = false
     }
     /**
      * Called by Data Binding.
@@ -75,6 +79,15 @@ class MoviesViewModel  @Inject constructor(
 
     fun setOrderCriteria(criterion: MoviesOrderCriteria?) {
         currentOrderCriterion = criterion ?: MoviesOrderCriteria.POPULAR
+    }
+
+    fun search(s: String) {
+        showLoading()
+        viewModelScope.launch {
+            val movies = searchMovies(s)
+            hideProgress()
+            processMoviesDataResponse(movies)
+        }
     }
 }
 

@@ -29,4 +29,7 @@ interface MovieDao {
 
     @Query("SELECT * FROM movies WHERE id == :movieId")
     suspend fun getMovie(movieId: Int): Movie
+
+    @Query("SELECT * FROM movies WHERE title LIKE :searchTerm")
+    suspend fun searchMovies(searchTerm: String): List<Movie>
 }

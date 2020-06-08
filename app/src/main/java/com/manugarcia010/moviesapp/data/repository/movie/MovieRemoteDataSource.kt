@@ -29,4 +29,15 @@ class MovieRemoteDataSource(private val movieApi: MovieApi) : MovieDataSource.Re
             Response.Error(e)
         }
     }
+
+    override suspend fun searchMovies(searchTerm: String): Response<List<Movie>> {
+        return try {
+            val result = movieApi.searchMovies(searchTerm)
+            Response.Success(result.movies.map {
+                it.toDomainMovie()
+            })
+        } catch (e: Exception) {
+            Response.Error(e)
+        }
+    }
 }

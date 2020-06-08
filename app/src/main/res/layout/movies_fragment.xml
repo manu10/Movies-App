@@ -4,6 +4,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools">
 <data>
 
+    <import type="android.view.View" />
+
     <variable
         name="viewmodel"
         type="com.manugarcia010.moviesapp.ui.movies.MoviesViewModel" />
@@ -21,6 +23,7 @@ xmlns:tools="http://schemas.android.com/tools">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:visibility="@{viewmodel.dataAvailable ? View.GONE : View.VISIBLE}"
         app:mutableText="@{viewmodel.errorMessage}"
         />
 
@@ -39,7 +42,7 @@ xmlns:tools="http://schemas.android.com/tools">
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/movie_list_margin_t"
-            android:visibility="visible"
+            android:visibility="@{viewmodel.dataAvailable ? View.VISIBLE : View.GONE}"
             app:items="@{viewmodel.items}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/movie_item" />

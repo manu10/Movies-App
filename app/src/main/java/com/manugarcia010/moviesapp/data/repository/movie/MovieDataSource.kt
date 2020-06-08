@@ -8,6 +8,7 @@ interface MovieDataSource {
     interface Remote {
         suspend fun getPopularMovies(): Response<List<Movie>>
         suspend fun getTopRatedMovies(): Response<List<Movie>>
+        suspend fun searchMovies(searchTerm: String): Response<List<Movie>>
     }
 
     interface Local : Remote {

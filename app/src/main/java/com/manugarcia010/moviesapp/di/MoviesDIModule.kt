@@ -10,6 +10,7 @@ import com.manugarcia010.moviesapp.data.repository.movie.MovieRemoteDataSource
 import com.manugarcia010.moviesapp.data.repository.movie.MovieRepositoryImpl
 import com.manugarcia010.moviesapp.domain.repository.MovieRepository
 import com.manugarcia010.moviesapp.domain.usecase.GetMovies
+import com.manugarcia010.moviesapp.domain.usecase.SearchMovies
 import com.manugarcia010.moviesapp.ui.movies.MoviesFragment
 import com.manugarcia010.moviesapp.ui.movies.MoviesViewModel
 import dagger.Module
@@ -54,6 +55,10 @@ abstract class MoviesDIModule {
         @Provides
         fun provideGetMovies(repository: MovieRepository): GetMovies
                 = GetMovies(repository)
+
+        @Provides
+        fun provideSearchMovies(repository: MovieRepository): SearchMovies
+                = SearchMovies(repository)
     }
 
 
@@ -63,8 +68,8 @@ abstract class MoviesDIModule {
         @Provides
         @IntoMap
         @ViewModelKey(MoviesViewModel::class)
-        fun provideAddNoteViewModel(getMovies : GetMovies): ViewModel =
-            MoviesViewModel(getMovies)
+        fun provideAddNoteViewModel(getMovies : GetMovies, searchMovies: SearchMovies): ViewModel =
+            MoviesViewModel(getMovies, searchMovies)
     }
 
     @Module

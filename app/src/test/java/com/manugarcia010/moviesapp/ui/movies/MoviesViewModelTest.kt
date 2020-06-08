@@ -81,6 +81,8 @@ class MoviesViewModelTest {
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
 
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataAvailable)).isTrue()
+
         // And the list of items is not empty
         assertThat(LiveDataTestUtil.getValue(viewModel.items)).isNotEmpty()
 
@@ -97,6 +99,46 @@ class MoviesViewModelTest {
 
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataAvailable)).isFalse()
+
+        // And the list of items is not empty
+        assertThat(LiveDataTestUtil.getValue(viewModel.errorMessage)).isNotEmpty()
+
+    }
+
+    @Test
+    fun searchMovies_success() = runBlockingTest{
+        // Make the repository return a correct value
+        Mockito.`when`(movieRepository.searchMovies(any())).thenReturn(
+            Response.Success(FakeDataGenerator.getPopularMovies()))
+
+        // Search movies
+        viewModel.search("")
+
+        // Then progress indicator is hidden
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataAvailable)).isTrue()
+
+        // And the list of items is not empty
+        assertThat(LiveDataTestUtil.getValue(viewModel.items)).isNotEmpty()
+
+    }
+
+    @Test
+    fun searchMovies_failure() = runBlockingTest{
+        // Make the repository return a correct value
+        Mockito.`when`(movieRepository.searchMovies(any())).thenReturn(
+            Response.Error(DataNotAvailableException()))
+
+        // search movies data
+        viewModel.search("")
+
+        // Then progress indicator is hidden
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataAvailable)).isFalse()
 
         // And the list of items is not empty
         assertThat(LiveDataTestUtil.getValue(viewModel.errorMessage)).isNotEmpty()
