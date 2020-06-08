@@ -13,7 +13,7 @@ interface MovieDao {
     suspend fun getPopularMovies(): List<Movie>
 
     @Query("SELECT * FROM movies ORDER BY vote_average DESC")
-    fun getTopRatedMovies(): List<Movie>
+    suspend fun getTopRatedMovies(): List<Movie>
 
     /**
      * Insert all movies.
