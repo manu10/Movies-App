@@ -23,6 +23,7 @@ class MoviesAdapter(private val viewModel: MoviesViewModel) :
 
         fun bind(viewModel: MoviesViewModel, item: MovieUI) {
             binding.movie = item
+            binding.viewmodel = viewModel
             binding.executePendingBindings()
         }
 

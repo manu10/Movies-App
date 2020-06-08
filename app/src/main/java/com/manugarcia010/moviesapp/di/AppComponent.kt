@@ -11,6 +11,7 @@ import javax.inject.Singleton
     AndroidSupportInjectionModule::class,
     AppModule::class,
     MoviesDIModule::class,
+    MovieDetailsDIModule::class,
     UiModule::class
 ])
 @Singleton

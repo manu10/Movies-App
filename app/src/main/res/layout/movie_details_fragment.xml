@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.manugarcia010.moviesapp.ui.details.MovieDetailsViewModel" />
+
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewmodel.dataLoading ? View.VISIBLE : View.GONE}"/>
+
+
+            <androidx.constraintlayout.widget.Group
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:visibility="visible"
+                app:constraint_referenced_ids="movieImg,movieOverview,movieTitle"
+                android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}"/>
+
+            <ImageView
+                android:id="@+id/movieImg"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/movie_details_img_height"
+                android:layout_marginStart="@dimen/movie_row_details_margin"
+                android:contentDescription="@string/movie_image_description"
+                android:scaleType="fitCenter"
+                android:src="@{viewmodel.movie.imageUrl}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/movieTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/movie_row_details_margin"
+                android:padding="@dimen/movie_details_info_padding"
+                android:textSize="@dimen/movie_details_title_size"
+                android:text="@{viewmodel.movie.title}"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movieImg"
+                tools:text="The Englishman Who Went Up a Hill But Came Down a Mountain" />
+
+            <TextView
+                android:id="@+id/movieOverview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/movie_row_details_margin"
+                android:padding="@dimen/movie_details_info_padding"
+                android:text="@{viewmodel.movie.overview}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movieTitle"
+                tools:text="This film captured Hugh Grant just after Four Weddings and a Funeral, which is to say, at the height of his stammering romantic-lead charm. Like so" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

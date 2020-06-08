@@ -5,10 +5,14 @@ import com.google.common.truth.Truth.assertThat
 import com.manugarcia010.moviesapp.FakeDataGenerator
 import com.manugarcia010.moviesapp.LiveDataTestUtil
 import com.manugarcia010.moviesapp.MainCoroutineRule
+import com.manugarcia010.moviesapp.assertLiveDataEventTriggered
 import com.manugarcia010.moviesapp.data.exception.DataNotAvailableException
 import com.manugarcia010.moviesapp.domain.Response
 import com.manugarcia010.moviesapp.domain.repository.MovieRepository
-import com.manugarcia010.moviesapp.domain.usecase.GetPopularMovies
+import com.manugarcia010.moviesapp.domain.usecase.GetMovies
+import com.manugarcia010.moviesapp.domain.usecase.MoviesOrderCriteria
+import com.manugarcia010.moviesapp.domain.usecase.SearchMovies
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -41,8 +45,31 @@ class MoviesViewModelTest {
     fun setupViewModel() {
         MockitoAnnotations.initMocks(this)
         viewModel = MoviesViewModel(
-            GetPopularMovies(movieRepository)
+            GetMovies(movieRepository),
+            SearchMovies(movieRepository)
         )
+    }
+
+    @Test
+    fun loadPopularMovies_loading() = runBlockingTest{
+        // Make the repository return a correct value
+        Mockito.`when`(movieRepository.getPopularMovies()).thenReturn(
+            Response.Success(FakeDataGenerator.getPopularMovies()))
+
+        // Pause dispatcher so we can verify initial values
+        mainCoroutineRule.pauseDispatcher()
+
+        // Load movies
+        viewModel.loadMovies()
+
+        // Then progress indicator is visible
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isTrue()
+
+        mainCoroutineRule.resumeDispatcher()
+
+        // Then progress indicator is hidden
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
     }
 
     @Test
@@ -51,11 +78,13 @@ class MoviesViewModelTest {
         Mockito.`when`(movieRepository.getPopularMovies()).thenReturn(
             Response.Success(FakeDataGenerator.getPopularMovies()))
 
-        // Load weather data
+        // Load movies
         viewModel.loadMovies()
 
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataAvailable)).isTrue()
 
         // And the list of items is not empty
         assertThat(LiveDataTestUtil.getValue(viewModel.items)).isNotEmpty()
@@ -68,25 +97,85 @@ class MoviesViewModelTest {
         Mockito.`when`(movieRepository.getPopularMovies()).thenReturn(
             Response.Error(DataNotAvailableException()))
 
-        // Load weather data
+        // Load movies
         viewModel.loadMovies()
 
         // Then progress indicator is hidden
         assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataAvailable)).isFalse()
 
         // And the list of items is not empty
         assertThat(LiveDataTestUtil.getValue(viewModel.errorMessage)).isNotEmpty()
 
     }
 
+    @Test
+    fun searchMovies_success() = runBlockingTest{
+        // Make the repository return a correct value
+        Mockito.`when`(movieRepository.searchMovies(any())).thenReturn(
+            Response.Success(FakeDataGenerator.getPopularMovies()))
+
+        // Search movies
+        viewModel.search("")
+
+        // Then progress indicator is hidden
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataAvailable)).isTrue()
+
+        // And the list of items is not empty
+        assertThat(LiveDataTestUtil.getValue(viewModel.items)).isNotEmpty()
+
+    }
+
+    @Test
+    fun searchMovies_failure() = runBlockingTest{
+        // Make the repository return a correct value
+        Mockito.`when`(movieRepository.searchMovies(any())).thenReturn(
+            Response.Error(DataNotAvailableException()))
+
+        // search movies data
+        viewModel.search("")
+
+        // Then progress indicator is hidden
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataLoading)).isFalse()
+
+        assertThat(LiveDataTestUtil.getValue(viewModel.dataAvailable)).isFalse()
+
+        // And the list of items is not empty
+        assertThat(LiveDataTestUtil.getValue(viewModel.errorMessage)).isNotEmpty()
+
+    }
+
+    @Test
+    fun onRefresh_getTopRatedMovies_isCalled() = runBlockingTest{
+        // With MoviesOrderCriteria.POPULAR set
+        viewModel.setOrderCriteria(MoviesOrderCriteria.TOP_RATED)
+        // When onRefresh() is called
+        viewModel.onRefresh()
+        // getPopularMovies() is called
+        verify(movieRepository).getTopRatedMovies()
+    }
 
     @Test
     fun onRefresh_getPopularMovies_isCalled() = runBlockingTest{
-        // Make the repository return a correct value
+        // With MoviesOrderCriteria.POPULAR set
+        viewModel.setOrderCriteria(MoviesOrderCriteria.POPULAR)
+        // When onRefresh() is called
         viewModel.onRefresh()
+        // getPopularMovies() is called
         verify(movieRepository).getPopularMovies()
     }
 
 
+    @Test
+    fun clickOnMovie_setsEventToNavigate() {
+        val movieId = 1
+        viewModel.openMovieDetails(movieId)
+
+        // Then the event is triggered
+        assertLiveDataEventTriggered(viewModel.openMovieDetailsEvent, movieId)
+    }
 
 }

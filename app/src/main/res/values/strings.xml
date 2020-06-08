@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Movies App</string>
     <string name="movie_image_description">Movie Image</string>
+    <string name="nav_top_rated">Top Rated</string>
+    <string name="nav_popular">Popular</string>
+    <string name="menu_filter">Filter</string>
+    <string name="menu_search">Search</string>
 </resources>

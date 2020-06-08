@@ -4,6 +4,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools">
 <data>
 
+    <import type="android.view.View" />
+
     <variable
         name="viewmodel"
         type="com.manugarcia010.moviesapp.ui.movies.MoviesViewModel" />
@@ -21,6 +23,7 @@ xmlns:tools="http://schemas.android.com/tools">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:visibility="@{viewmodel.dataAvailable ? View.GONE : View.VISIBLE}"
         app:mutableText="@{viewmodel.errorMessage}"
         />
 
@@ -28,21 +31,21 @@ xmlns:tools="http://schemas.android.com/tools">
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:onRefreshListener="@{() -> viewmodel.onRefresh()}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:refreshing="@{viewmodel.dataLoading ? true : false}"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:onRefreshListener="@{() -> viewmodel.onRefresh()}"
+        app:refreshing="@{viewmodel.dataLoading ? true : false}">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/movieList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/movie_list_margin_t"
-            android:visibility="visible"
-            tools:listitem="@layout/movie_item"
+            android:visibility="@{viewmodel.dataAvailable ? View.VISIBLE : View.GONE}"
+            app:items="@{viewmodel.items}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:items="@{viewmodel.items}" />
+            tools:listitem="@layout/movie_item" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

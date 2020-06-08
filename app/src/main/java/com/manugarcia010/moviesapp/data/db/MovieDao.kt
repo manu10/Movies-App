@@ -8,13 +8,12 @@ import com.manugarcia010.moviesapp.domain.model.Movie
 
 @Dao
 interface MovieDao {
-    /**
-     * Select all movies from the movies table.
-     *
-     * @return all movies.
-     */
+
     @Query("SELECT * FROM movies ORDER BY popularity DESC")
     suspend fun getPopularMovies(): List<Movie>
+
+    @Query("SELECT * FROM movies ORDER BY vote_average DESC")
+    suspend fun getTopRatedMovies(): List<Movie>
 
     /**
      * Insert all movies.
@@ -27,4 +26,10 @@ interface MovieDao {
      */
     @Query("DELETE FROM movies")
     suspend fun deleteMovies()
+
+    @Query("SELECT * FROM movies WHERE id == :movieId")
+    suspend fun getMovie(movieId: Int): Movie
+
+    @Query("SELECT * FROM movies WHERE title LIKE :searchTerm")
+    suspend fun searchMovies(searchTerm: String): List<Movie>
 }

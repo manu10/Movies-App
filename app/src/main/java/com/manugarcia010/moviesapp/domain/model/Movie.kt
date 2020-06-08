@@ -32,6 +32,11 @@ data class Movie(
     val popularity: Double,
 
     @Expose
+    @SerializedName("vote_average")
+    @ColumnInfo(name = "vote_average")
+    val voteAverage: Double,
+
+    @Expose
     @SerializedName("title")
     @ColumnInfo(name = "title")
     val title: String
@@ -41,6 +46,7 @@ data class Movie(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readDouble(),
+        parcel.readDouble(),
         parcel.readString()!!
     )
 
@@ -49,6 +55,7 @@ data class Movie(
         parcel.writeString(overview)
         parcel.writeString(posterPath)
         parcel.writeDouble(popularity)
+        parcel.writeDouble(voteAverage)
         parcel.writeString(title)
     }
 
