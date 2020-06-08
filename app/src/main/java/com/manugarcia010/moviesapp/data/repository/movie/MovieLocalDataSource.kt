@@ -19,6 +19,9 @@ class MovieLocalDataSource(
         }
     }
 
+    override suspend fun getMovie(movieId: Int) =
+        movieDao.getMovie(movieId)
+
     override suspend fun saveMovies(movies: List<Movie>) {
         movieDao.saveMovies(movies)
     }

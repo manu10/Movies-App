@@ -9,6 +9,7 @@ import com.manugarcia010.moviesapp.data.repository.movie.MovieLocalDataSource
 import com.manugarcia010.moviesapp.data.repository.movie.MovieRemoteDataSource
 import com.manugarcia010.moviesapp.data.repository.movie.MovieRepositoryImpl
 import com.manugarcia010.moviesapp.domain.repository.MovieRepository
+import com.manugarcia010.moviesapp.domain.usecase.GetMovie
 import com.manugarcia010.moviesapp.domain.usecase.GetPopularMovies
 import com.manugarcia010.moviesapp.ui.details.MovieDetailsFragment
 import com.manugarcia010.moviesapp.ui.details.MovieDetailsViewModel
@@ -21,8 +22,8 @@ import dagger.multibindings.IntoMap
 import retrofit2.Retrofit
 
 @Module(includes = [
-    MovieDetailsDIModule.ProvideViewModel::class
-//    MovieDetailsDIModule.ProvideMovies::class
+    MovieDetailsDIModule.ProvideViewModel::class,
+    MovieDetailsDIModule.ProvideMovieDetails::class
 ])
 abstract class MovieDetailsDIModule {
 
@@ -33,31 +34,13 @@ abstract class MovieDetailsDIModule {
     )
     abstract fun bind(): MovieDetailsFragment
 
-//    @Module
-//    class ProvideMovies {
-//
-//        @Provides
-//        internal fun providesMovieApi(retrofit: Retrofit): MovieApi {
-//            return retrofit.create(MovieApi::class.java)
-//        }
-//
-//        @Provides
-//        fun provideMovieRemoteDataSource(movieApi: MovieApi): MovieDataSource.Remote
-//                = MovieRemoteDataSource(movieApi)
-//
-//        @Provides
-//        fun provideMovieLocalDataSource(movieDao: MovieDao): MovieDataSource.Local
-//                = MovieLocalDataSource(movieDao)
-//
-//        @Provides
-//        fun provideMovieRepository(movieRemote: MovieDataSource.Remote, movieLocal: MovieDataSource.Local): MovieRepository
-//                = MovieRepositoryImpl(movieRemote, movieLocal)
-//
-//        @Provides
-//        fun provideGetMovies(repository: MovieRepository): GetPopularMovies
-//                = GetPopularMovies(repository)
-//    }
+    @Module
+    class ProvideMovieDetails {
 
+        @Provides
+        fun provideGetMovie(repository: MovieRepository): GetMovie
+                = GetMovie(repository)
+    }
 
     @Module
     class ProvideViewModel {
@@ -65,8 +48,8 @@ abstract class MovieDetailsDIModule {
         @Provides
         @IntoMap
         @ViewModelKey(MovieDetailsViewModel::class)
-        fun provideAddNoteViewModel(): ViewModel =
-            MovieDetailsViewModel()
+        fun provideMovieDetailsViewModel(getMovie: GetMovie): ViewModel =
+            MovieDetailsViewModel(getMovie)
     }
 
     @Module

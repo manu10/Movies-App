@@ -11,6 +11,7 @@ interface MovieDataSource {
 
     interface Local : Remote {
         suspend fun saveMovies(movies: List<Movie>)
+        suspend fun getMovie(movieId: Int): Movie
     }
 
 }

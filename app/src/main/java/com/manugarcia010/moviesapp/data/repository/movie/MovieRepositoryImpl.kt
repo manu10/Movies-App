@@ -17,6 +17,10 @@ class MovieRepositoryImpl constructor(
         return movieLocal.getPopularMovies() //todo: add something to let the user know that the results may be outdated
     }
 
+    override suspend fun getMovie(movieId: Int): Movie {
+        return movieLocal.getMovie(movieId)
+    }
+
     private suspend fun getPopularMoviesFromRemoteDataSource(): Response<List<Movie>> {
 
         return when (val response = movieRemote.getPopularMovies()) {

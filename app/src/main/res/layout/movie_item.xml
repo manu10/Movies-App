@@ -66,7 +66,7 @@
                 android:layout_marginHorizontal="@dimen/movie_row_details_margin"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/movie_row_details_margin"
-                android:text="@{movie.description}"
+                android:text="@{movie.overview}"
                 tools:text="This film captured Hugh Grant just after Four Weddings and a Funeral, which is to say, at the height of his stammering romantic-lead charm. Like so" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
