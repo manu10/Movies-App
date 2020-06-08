@@ -11,6 +11,8 @@ import com.manugarcia010.moviesapp.domain.Response
 import com.manugarcia010.moviesapp.domain.repository.MovieRepository
 import com.manugarcia010.moviesapp.domain.usecase.GetMovies
 import com.manugarcia010.moviesapp.domain.usecase.MoviesOrderCriteria
+import com.manugarcia010.moviesapp.domain.usecase.SearchMovies
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -43,7 +45,8 @@ class MoviesViewModelTest {
     fun setupViewModel() {
         MockitoAnnotations.initMocks(this)
         viewModel = MoviesViewModel(
-            GetMovies(movieRepository)
+            GetMovies(movieRepository),
+            SearchMovies(movieRepository)
         )
     }
 
@@ -56,7 +59,7 @@ class MoviesViewModelTest {
         // Pause dispatcher so we can verify initial values
         mainCoroutineRule.pauseDispatcher()
 
-        // Load weather data
+        // Load movies
         viewModel.loadMovies()
 
         // Then progress indicator is visible
@@ -75,7 +78,7 @@ class MoviesViewModelTest {
         Mockito.`when`(movieRepository.getPopularMovies()).thenReturn(
             Response.Success(FakeDataGenerator.getPopularMovies()))
 
-        // Load weather data
+        // Load movies
         viewModel.loadMovies()
 
         // Then progress indicator is hidden
@@ -94,7 +97,7 @@ class MoviesViewModelTest {
         Mockito.`when`(movieRepository.getPopularMovies()).thenReturn(
             Response.Error(DataNotAvailableException()))
 
-        // Load weather data
+        // Load movies
         viewModel.loadMovies()
 
         // Then progress indicator is hidden
