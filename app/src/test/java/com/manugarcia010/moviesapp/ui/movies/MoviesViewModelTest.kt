@@ -9,7 +9,7 @@ import com.manugarcia010.moviesapp.assertLiveDataEventTriggered
 import com.manugarcia010.moviesapp.data.exception.DataNotAvailableException
 import com.manugarcia010.moviesapp.domain.Response
 import com.manugarcia010.moviesapp.domain.repository.MovieRepository
-import com.manugarcia010.moviesapp.domain.usecase.GetPopularMovies
+import com.manugarcia010.moviesapp.domain.usecase.GetMovies
 import com.manugarcia010.moviesapp.domain.usecase.MoviesOrderCriteria
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,7 +43,7 @@ class MoviesViewModelTest {
     fun setupViewModel() {
         MockitoAnnotations.initMocks(this)
         viewModel = MoviesViewModel(
-            GetPopularMovies(movieRepository)
+            GetMovies(movieRepository)
         )
     }
 

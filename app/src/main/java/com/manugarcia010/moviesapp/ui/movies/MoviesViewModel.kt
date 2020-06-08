@@ -6,14 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manugarcia010.moviesapp.domain.Response
 import com.manugarcia010.moviesapp.domain.model.Movie
-import com.manugarcia010.moviesapp.domain.usecase.GetPopularMovies
+import com.manugarcia010.moviesapp.domain.usecase.GetMovies
 import com.manugarcia010.moviesapp.domain.usecase.MoviesOrderCriteria
+import com.manugarcia010.moviesapp.domain.usecase.SearchMovies
 import com.manugarcia010.moviesapp.ui.Event
 import com.manugarcia010.moviesapp.ui.extensions.toPresentationMovie
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MoviesViewModel  @Inject constructor(val getMovies: GetPopularMovies) : ViewModel() {
+class MoviesViewModel  @Inject constructor(
+    val getMovies: GetMovies,
+    val searchMovies: SearchMovies
+) : ViewModel() {
 
     private val _openMovieDetailsEvent = MutableLiveData<Event<Int>>()
     val openMovieDetailsEvent: LiveData<Event<Int>> = _openMovieDetailsEvent
