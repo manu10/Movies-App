@@ -1,15 +1,15 @@
 package com.manugarcia010.moviesapp
 
 import android.app.Application
-import androidx.fragment.app.Fragment
 import com.manugarcia010.moviesapp.di.DaggerAppComponent
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class MoviesApp : Application(), HasSupportFragmentInjector {
+class MoviesApp : Application(), HasAndroidInjector {
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Any>
 
 
     override fun onCreate() {
@@ -20,5 +20,7 @@ class MoviesApp : Application(), HasSupportFragmentInjector {
             .inject(this)
     }
 
-    override fun supportFragmentInjector() = fragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> {
+        return fragmentInjector
+    }
 }

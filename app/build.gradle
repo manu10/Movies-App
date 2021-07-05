@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId "com.manugarcia010.moviesapp"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -51,7 +51,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "androidx.appcompat:appcompat:$versions.appCompat"
     implementation "androidx.core:core-ktx:$versions.androidXCoreKtx"
@@ -64,10 +64,6 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$versions.glide"
     kapt "com.github.bumptech.glide:compiler:$versions.glide"
 
-    // LiveData & ViewModel
-    implementation "android.arch.lifecycle:extensions:$versions.lifecycleExt"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycleViewmodelKtx"
-
     // Data binding
     kapt "com.android.databinding:compiler:$versions.databindingComp"
 
@@ -78,8 +74,8 @@ dependencies {
     // Dagger for DI
     implementation "com.google.dagger:dagger:$versions.dagger"
     kapt "com.google.dagger:dagger-compiler:$versions.dagger"
-    implementation "com.google.dagger:dagger-android:$versions.dagger"
-    implementation "com.google.dagger:dagger-android-support:$versions.dagger"
+    implementation "com.google.dagger:dagger-android:$versions.daggerAndroid"
+    implementation "com.google.dagger:dagger-android-support:$versions.daggerAndroid"
     kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 
     //Networking
@@ -101,7 +97,7 @@ dependencies {
     implementation "com.google.code.gson:gson:$versions.gson"
 
     implementation "androidx.legacy:legacy-support-v4:$versions.supportv4"
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycleExt"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
 
     // Dependencies for local unit tests

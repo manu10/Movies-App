@@ -43,7 +43,7 @@ open class AppModule(){
     @Singleton
     open fun providesDispatcher(okHttpClient: OkHttpClient): Dispatcher {
         // This can be used to cancel all pending request
-        return okHttpClient.dispatcher()
+        return okHttpClient.dispatcher
     }
 
     @Provides
