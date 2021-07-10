@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.manugarcia010.moviesapp.domain.usecase.GetMovie
 import com.manugarcia010.moviesapp.ui.extensions.toPresentationMovie
 import com.manugarcia010.moviesapp.ui.movies.MovieUI
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MovieDetailsViewModel @Inject constructor(val getMovie : GetMovie) : ViewModel() {
 
     private val _movie = MutableLiveData<MovieUI>()

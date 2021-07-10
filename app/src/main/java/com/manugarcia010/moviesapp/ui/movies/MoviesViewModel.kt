@@ -11,9 +11,11 @@ import com.manugarcia010.moviesapp.domain.usecase.MoviesOrderCriteria
 import com.manugarcia010.moviesapp.domain.usecase.SearchMovies
 import com.manugarcia010.moviesapp.ui.Event
 import com.manugarcia010.moviesapp.ui.extensions.toPresentationMovie
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MoviesViewModel  @Inject constructor(
     val getMovies: GetMovies,
     val searchMovies: SearchMovies

@@ -2,8 +2,9 @@ package com.manugarcia010.moviesapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.manugarcia010.moviesapp.ui.movies.MoviesFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MoviesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

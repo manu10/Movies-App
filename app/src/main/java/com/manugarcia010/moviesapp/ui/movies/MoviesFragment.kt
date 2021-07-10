@@ -1,31 +1,24 @@
 package com.manugarcia010.moviesapp.ui.movies
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.manugarcia010.moviesapp.R
 import com.manugarcia010.moviesapp.databinding.MoviesFragmentBinding
 import com.manugarcia010.moviesapp.domain.usecase.MoviesOrderCriteria
 import com.manugarcia010.moviesapp.ui.EventObserver
-import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MoviesFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModel: MoviesViewModel
+    private val viewModel: MoviesViewModel by viewModels()
     private lateinit var binding: MoviesFragmentBinding
     private lateinit var moviesAdapter: MoviesAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -68,8 +61,8 @@ class MoviesFragment : Fragment() {
             else -> false
         }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupListAdapter()
         setupNavigation()
         viewModel.loadMovies()

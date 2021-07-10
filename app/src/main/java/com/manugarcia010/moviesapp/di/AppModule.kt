@@ -3,12 +3,14 @@ package com.manugarcia010.moviesapp.di
 import android.content.Context
 import androidx.room.Room
 import com.manugarcia010.moviesapp.BuildConfig
-import com.manugarcia010.moviesapp.MoviesApp
 import com.manugarcia010.moviesapp.data.remoteservice.AuthorizationInterceptor
 import com.manugarcia010.moviesapp.data.db.MovieDao
 import com.manugarcia010.moviesapp.data.db.MovieDatabase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,13 +20,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-open class AppModule(){
-
-    @Provides
-    @Singleton
-    fun provideContext(application: MoviesApp) : Context {
-        return application.applicationContext
-    }
+@InstallIn(SingletonComponent::class)
+open class AppModule{
 
     @Provides
     @Singleton
@@ -58,7 +55,9 @@ open class AppModule(){
 
     @Singleton
     @Provides
-    open fun providesMovieDataBase(applicationContext: Context): MovieDatabase {
+    open fun providesMovieDataBase(
+        @ApplicationContext applicationContext: Context
+    ): MovieDatabase {
         return Room.databaseBuilder(
             applicationContext,
             MovieDatabase::class.java, BuildConfig.DATABASE
